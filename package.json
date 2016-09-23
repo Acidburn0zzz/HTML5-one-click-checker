@@ -1,13 +1,16 @@
 {
   "title": "HTML5 one-click checker",
   "name": "html5-one-click-checker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A add-on for checking HTML5 validity in one-click",
   "main": "index.js",
   "author": "Tony PALAQUER",
   "engines": {
     "firefox": ">=38.0a1",
     "fennec": ">=38.0a1"
+  },
+  "permissions": {
+    "cross-domain-content": ["http://validator.w3.org"]
   },
   "license": "MIT",
   "keywords": [

@@ -27,7 +27,6 @@ var panel = panels.Panel({
 // This event is called everytimes a page is loaded in the tab.
 // It permit to reinit the button when a page is loaded and ready
 tabs.on('ready', function(tab){
-  console.log("Button re-initialized");
   button.state("window", {checked: false,})
   button.state("tab", {
     badge: null,

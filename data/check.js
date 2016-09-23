@@ -1,6 +1,6 @@
 // Get the html source of the page
 var src = new XMLSerializer().serializeToString(document);
-
+// console.log(src);
 // url of validator
 // url = 'https://html5.validator.nu';
 // url = 'https://checker.html5.org';
