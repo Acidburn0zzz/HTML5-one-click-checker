@@ -1,0 +1,42 @@
+html, body {
+    background-color: #efefef;
+    font-size: 12px;
+    padding-bottom: 0;    
+}
+div.header{
+    background-color: #efefef;
+    text-align: center;
+}
+div.header > h1 {
+    background-color: #efefef;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+
+/* ======== Ovewrited style of validator ========= */
+div#results, div#about {
+    font-size: 11px;
+    margin-right: 0;
+    margin-top: 0px;
+    padding-left: 0;
+}
+
+ol {
+    margin: 0 0;
+}
+
+#results > ol:first-child {
+    padding-bottom: 0px;
+    padding-top: 10px;
+}
+
+#results > ol:first-child > li > p:first-child, #results > ol:first-child > li > p:first-child code {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.error p, .info p, .warning p, .error dd, .info dd, .warning dd {
+    line-height: 1.6;
+}

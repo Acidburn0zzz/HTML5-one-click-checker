@@ -45,25 +45,19 @@ var message;
 
 // wait for addon to ask to  convert to DOM... and then do the rest of the check
 self.port.on("do-convertToDOM", function(sanitizedHTML){
-  // console.log("sanitized HTML =\n" +sanitizedHTML);
   var resultDoc = HTMLToDOM(sanitizedHTML);
 
   // if HTML 5 is valid
   if (resultDoc.querySelector("p.success")) {
-    console.log("Valid");
     message = {
       status: "valid",
     };
 
   // else if HTML 5 is invalid
   } else if (resultDoc.querySelector("p.failure")) {
-    console.log("Invalid");
     var results = resultDoc.querySelector("#results ol");
     var warningsCnt = results.querySelectorAll("li.warning").length;
     var errorsCnt = results.querySelectorAll("li.error").length;
-    console.warn(warningsCnt);
-    console.warn(errorsCnt);
-
     var resultsDetails = results.innerHTML;
     message = {
       status: "invalid",
@@ -74,7 +68,6 @@ self.port.on("do-convertToDOM", function(sanitizedHTML){
 
   // else something is broken
   } else {
-    console.log("Cannot parse result correctly");
     message = {
       status: "error",
       details: "unable to analyse the results",
@@ -87,7 +80,6 @@ self.port.on("do-convertToDOM", function(sanitizedHTML){
 
 
 function HTMLToDOM(aHTMLString){
-  console.log("parsing");
   var doc = document.implementation.createHTMLDocument("validator result");
   doc.documentElement.innerHTML = aHTMLString;
   return doc

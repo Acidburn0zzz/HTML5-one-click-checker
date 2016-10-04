@@ -25,7 +25,7 @@ var panel = panels.Panel({
   width: 600,
   contentURL: self.data.url("panel.html"),
   contentScriptFile: self.data.url("get-text.js"),
-  contentStyleFile: self.data.url("style.css"),
+  contentStyleFile: [self.data.url("style.css"), self.data.url("custom.css")],
   onHide: handleHide
 });
 
@@ -75,7 +75,7 @@ function checkHTML() {
         badge: "Err",
       });
       // log the error message to console
-      console.log(response.details);
+      console.error(response.details);
 
     } else if (response.status == "invalid") {
       button.state("tab", {
@@ -97,9 +97,8 @@ function checkHTML() {
         badge: "Err",
       });
       // log the error message to console
-      console.log("Unexpected error!")
+      console.error("Unexpected error!")
     }
-
   });
 
 }
