@@ -1,7 +1,12 @@
+// We require chrome for sanitizing the HTML we got from the HTML5 validator
+const {Cc, Ci} = require("chrome");
+var parser = Cc["@mozilla.org/parserutils;1"].getService(Ci.nsIParserUtils);
+
 var { ToggleButton } = require("sdk/ui/button/toggle");
 var panels = require("sdk/panel");
 var self = require("sdk/self");
 var tabs = require("sdk/tabs");
+var Request = require("sdk/request").Request;
 
 // Default properties of the button
 var button = ToggleButton({
@@ -19,10 +24,11 @@ var button = ToggleButton({
 var panel = panels.Panel({
   width: 600,
   contentURL: self.data.url("panel.html"),
-  contentScriptFile: [self.data.url("jquery-3.0.0.min.js"), self.data.url("get-text.js")],
+  contentScriptFile: self.data.url("get-text.js"),
   contentStyleFile: self.data.url("style.css"),
   onHide: handleHide
 });
+
 
 // This event is called everytimes a page is loaded in the tab.
 // It permit to reinit the button when a page is loaded and ready
@@ -47,9 +53,21 @@ function handleChange(state) {
 // Check the HTML and wait for response for processing
 function checkHTML() {
   var worker = tabs.activeTab.attach({
-    contentScriptFile: [self.data.url("jquery-3.0.0.min.js"), self.data.url("check.js")]
+    contentScriptFile: self.data.url("check.js")
+  });
+  // When source is receveid we ask for doing the request to validator
+  worker.port.on("source", function(src) {
+    worker.port.emit("do-request");
   });
 
+  // when response is receveid from validator, we sanitize the HTML ank to convert to DOM document (for easy parsing)
+  worker.port.on("do-sanitizeHTML", function(responseText) {
+    var sanitized = parser.sanitize(responseText, parser.SanitizerAllowStyle);
+    worker.port.emit("do-convertToDOM", sanitized);
+  });
+
+
+  // We wait for a response 
   worker.port.on("check-response", function(response) {
     if (response.status == "error") {
       button.state("tab", {
