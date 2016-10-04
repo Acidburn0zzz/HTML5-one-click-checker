@@ -11,6 +11,7 @@ Description: Mozilla extension for checking HTML5 validity in one-click
 ## History
 
 **0.0.3:**
+  - Panel UI improvment.
   - Remove jQuery dependencies and partial rewrite.
   - Remove compatibility for firefox for android (It don't work and I don't think it's really usefull actually)
 
