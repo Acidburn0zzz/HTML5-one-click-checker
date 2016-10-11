@@ -33,14 +33,18 @@ var panel = panels.Panel({
 // This event is called everytimes a page is loaded in the tab.
 // It permit to reinit the button when a page is loaded and ready
 tabs.on('ready', function(tab){
+  // console.error("tab on ready");
   button.state("window", {checked: false,})
   button.state("tab", {
     badge: null,
     badgeColor: null,
   })
-  button.once("click", checkHTML);
+  button.on("click", checkHTML);
 });
 
+tabs.on("deactivate", function(tab){
+  button.on("click", checkHTML);
+});
 
 function handleChange(state) {
   if (state.checked) {
@@ -52,6 +56,9 @@ function handleChange(state) {
 
 // Check the HTML and wait for response for processing
 function checkHTML() {
+  // console.log("checkHTML");
+  panel.port.emit("init");
+  button.removeListener("click", checkHTML);
   var worker = tabs.activeTab.attach({
     contentScriptFile: self.data.url("check.js")
   });
